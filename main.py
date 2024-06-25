@@ -12,7 +12,7 @@ class Validator(ABC):
 
 
 class HasNumberValidator(Validator):
-    def __init__(self, text):
+    def __init__(self, text) -> None:
         self.text = text
 
     def is_valid(self):
@@ -23,7 +23,7 @@ class HasNumberValidator(Validator):
 
 
 class HasUpperCharacterValidator(Validator):
-    def __init__(self, text):
+    def __init__(self, text) -> None:
         self.text = text
 
     def is_valid(self):
@@ -74,6 +74,7 @@ class PasswordValidator(Validator):
             HasLowerCharacterValidator,
             HaveIbeenPwndValidator,
         ]
+
     def is_valid(self):
         for class_name in self.validators:
             validator = class_name(self.password)

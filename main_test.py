@@ -1,4 +1,4 @@
-from main import HasNumberValidator, HasSpecialCharacterValidator,
+from main import HasNumberValidator, HasSpecialCharacterValidator
 
 
 def test_if_has_number_validator_positive():

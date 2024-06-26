@@ -27,7 +27,7 @@ class HasUpperCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        pass
+        return any([not character.isupper() for character in self.text])
 
 
 class HasLowerCharacterValidator(Validator):
@@ -35,10 +35,7 @@ class HasLowerCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        for character in self.text:
-            if not character.isalnum():
-                return True
-        return False
+        return any([not character.islower() for character in self.text])
 
 
 class HasSpecialCharacterValidator(Validator):
@@ -46,12 +43,13 @@ class HasSpecialCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        temp_list = []
-        for character in self.text:
-            temp_list.append(not character.isalnum())
-            # if not character.isalnum():
-            #     return True
-        return False
+        # temp_list = []
+        # for character in self.text:
+        #     temp_list.append(not character.isalnum())
+        #     # if not character.isalnum():
+        #     #     return True
+        # return any(temp_list)
+        return any([not character.isalnum() for character in self.text])
 
 class LenghtValidator(Validator):
     def __init__(self, text):

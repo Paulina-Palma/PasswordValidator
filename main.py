@@ -52,15 +52,12 @@ class HasSpecialCharacterValidator(Validator):
         return any([not character.isalnum() for character in self.text])
 
 class LenghtValidator(Validator):
-    def __init__(self, text, min_lenght):
+    def __init__(self, text, min_length=8) -> None:
         self.text = text
-        self.min_lenght = min_lenght
+        self.min_length = min_length
 
     def is_valid(self):
-    #     if len(self.text) >= self.min_lenght:
-    #         return True
-    #   return False
-        return len(self.text) >= self.min_lenght
+        return len(self.text) >= self.min_length
 
 class HaveIbeenPwndValidator(Validator): #powinien być na końcu, bo łączy się z API, czyli najpiwer dobrze trzeba przetestować hasło, a na koniec spr czy nie wyciekło
 

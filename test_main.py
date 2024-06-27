@@ -49,6 +49,7 @@ def test_if_has_special_character_validator_negative():
     #then
     assert result is False
 
+
 def test_if_has_upper_character_validator_positive():
     #given
     validator = HasUpperCharacterValidator('aaaAAA')

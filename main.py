@@ -27,7 +27,7 @@ class HasUpperCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        pass
+        return any([character.isupper() for character in self.text])
 
 
 class HasLowerCharacterValidator(Validator):
@@ -35,10 +35,7 @@ class HasLowerCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        for character in self.text:
-            if not character.isalnum():
-                return True
-        return False
+        return any([character.islower() for character in self.text])
 
 
 class HasSpecialCharacterValidator(Validator):
@@ -46,20 +43,24 @@ class HasSpecialCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        temp_list = []
-        for character in self.text:
-            temp_list.append(not character.isalnum())
-            # if not character.isalnum():
-            #     return True
-        return False
+        # temp_list = []
+        # for character in self.text:
+        #     temp_list.append(not character.isalnum())
+        #     # if not character.isalnum():
+        #     #     return True
+        # return any(temp_list)
+        return any([not character.isalnum() for character in self.text])
 
 class LenghtValidator(Validator):
-    def __init__(self, text):
+    def __init__(self, text, min_lenght):
         self.text = text
+        self.min_lenght = min_lenght
 
     def is_valid(self):
-        pass
-
+    #     if len(self.text) >= self.min_lenght:
+    #         return True
+    #   return False
+        return len(self.text) >= self.min_lenght
 
 class HaveIbeenPwndValidator(Validator): #powinien być na końcu, bo łączy się z API, czyli najpiwer dobrze trzeba przetestować hasło, a na koniec spr czy nie wyciekło
 

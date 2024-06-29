@@ -1,4 +1,10 @@
+from requests import get
+from hashlib import sha1
 from abc import ABC, abstractmethod
+
+class ValidationError(Exception):
+    pass
+
 
 class Validator(ABC):
     @abstractmethod
@@ -16,10 +22,14 @@ class HasNumberValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        for n in range(0, 10):
-            if str(n) in self.text:
-                return True
-        return False
+        if any(str(n) in self.text for n in range(10)):
+            return True
+        else:
+            raise ValidationError('Text must contain number!')
+        # for n in range(0, 10):
+        #     if str(n) in self.text:
+        #         return True
+        # return False
 
 
 class HasUpperCharacterValidator(Validator):
@@ -27,7 +37,10 @@ class HasUpperCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        return any([character.isupper() for character in self.text])
+        if any([character.isupper() for character in self.text]):
+            return True
+        else:
+            raise ValidationError('Text must contain upper letter!')
 
 
 class HasLowerCharacterValidator(Validator):
@@ -35,7 +48,10 @@ class HasLowerCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        return any([character.islower() for character in self.text])
+        if any([character.islower() for character in self.text]):
+            return True
+        else: 
+            raise ValidationError('Text must contain lower letter!')
 
 
 class HasSpecialCharacterValidator(Validator):
@@ -49,30 +65,45 @@ class HasSpecialCharacterValidator(Validator):
         #     # if not character.isalnum():
         #     #     return True
         # return any(temp_list)
-        return any([not character.isalnum() for character in self.text])
+        if any([not character.isalnum() for character in self.text]):
+            return True
+        else:
+            raise ValidationError('Text must contain special character!')
 
-class LenghtValidator(Validator):
+class LengthValidator(Validator):
     def __init__(self, text, min_length=8) -> None:
         self.text = text
         self.min_length = min_length
 
     def is_valid(self):
-        return len(self.text) >= self.min_length
+        if len(self.text) >= self.min_length:
+            return True
+        else:
+            raise ValidationError(f'Text is too short!')
 
-class HaveIbeenPwndValidator(Validator): #powinien być na końcu, bo łączy się z API, czyli najpiwer dobrze trzeba przetestować hasło, a na koniec spr czy nie wyciekło
+class HaveIbeenPwndValidator(Validator): 
+#powinien być na końcu, bo łączy się z API, czyli najpierw dobrze trzeba przetestować hasło, a na koniec spr czy nie wyciekło
 
-    def __init__(self, text):
-        self.text = text
+    def __init__(self, password) -> None:
+        self.password = password
 
     def is_valid(self):
-        pass
+        hash = sha1(self.password.encode('utf-8')).hexdigest().upper()
+        response = get('https://api.pwnedpasswords.com/range/' + hash[:5])
 
+        for line in response.text.splitlines():
+            if ':' in line:
+                found_hash, _ = line.split(':')
+                # _ => gdy zmienna jest nam niepotrzebna
+                if found_hash == hash[5:]:
+                    raise ValidationError('Leaked password! Choose another one!')
+        return True
 
 class PasswordValidator(Validator):
     def __init__(self, password):
         self.password = password
         self.validators = [
-            LenghtValidator,
+            LengthValidator,
             HasNumberValidator,
             HasSpecialCharacterValidator,
             HasUpperCharacterValidator,
@@ -83,8 +114,6 @@ class PasswordValidator(Validator):
     def is_valid(self):
         for class_name in self.validators:
             validator = class_name(self.password)
-            validator.is_valid()
-
-
-validator = PasswordValidator('qwerty')
-print(validator.is_valid())
+            if not validator.is_valid():
+                return False
+        return True

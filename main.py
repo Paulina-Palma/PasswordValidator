@@ -2,6 +2,10 @@ from requests import get
 from hashlib import sha1
 from abc import ABC, abstractmethod
 
+class ValidationError(Exception):
+    pass
+
+
 class Validator(ABC):
     @abstractmethod
     def __init__(self, text):
@@ -18,7 +22,10 @@ class HasNumberValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        return any(str(n) in self.text for n in range(10))
+        if any(str(n) in self.text for n in range(10)):
+            return True
+        else:
+            raise ValidationError('Text must contain number!')
         # for n in range(0, 10):
         #     if str(n) in self.text:
         #         return True
@@ -30,7 +37,10 @@ class HasUpperCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        return any([character.isupper() for character in self.text])
+        if any([character.isupper() for character in self.text]):
+            return True
+        else:
+            raise ValidationError('Text must contain upper letter!')
 
 
 class HasLowerCharacterValidator(Validator):
@@ -38,7 +48,10 @@ class HasLowerCharacterValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        return any([character.islower() for character in self.text])
+        if any([character.islower() for character in self.text]):
+            return True
+        else: 
+            raise ValidationError('Text must contain lower letter!')
 
 
 class HasSpecialCharacterValidator(Validator):
@@ -52,7 +65,10 @@ class HasSpecialCharacterValidator(Validator):
         #     # if not character.isalnum():
         #     #     return True
         # return any(temp_list)
-        return any([not character.isalnum() for character in self.text])
+        if any([not character.isalnum() for character in self.text]):
+            return True
+        else:
+            raise ValidationError('Text must contain special character!')
 
 class LengthValidator(Validator):
     def __init__(self, text, min_length=8) -> None:
@@ -60,9 +76,13 @@ class LengthValidator(Validator):
         self.min_length = min_length
 
     def is_valid(self):
-        return len(self.text) >= self.min_length
+        if len(self.text) >= self.min_length:
+            return True
+        else:
+            raise ValidationError(f'Text is too short!')
 
-class HaveIbeenPwndValidator(Validator):
+class HaveIbeenPwndValidator(Validator): 
+
 #powinien być na końcu, bo łączy się z API, czyli najpierw dobrze trzeba przetestować hasło, a na koniec spr czy nie wyciekło
 
     def __init__(self, password) -> None:
@@ -77,8 +97,8 @@ class HaveIbeenPwndValidator(Validator):
                 found_hash, _ = line.split(':')
                 # _ => gdy zmienna jest nam niepotrzebna
                 if found_hash == hash[5:]:
-                    return False
-        return True
+                    raise ValidationError('Leaked password! Choose another one!')
+
 
 class PasswordValidator(Validator):
     def __init__(self, password):
@@ -99,6 +119,3 @@ class PasswordValidator(Validator):
                 return False
         return True
 
-
-validator = PasswordValidator('qwerty')
-print(validator.is_valid())

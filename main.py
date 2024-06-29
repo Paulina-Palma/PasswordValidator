@@ -82,6 +82,7 @@ class LengthValidator(Validator):
             raise ValidationError(f'Text is too short!')
 
 class HaveIbeenPwndValidator(Validator): 
+
 #powinien być na końcu, bo łączy się z API, czyli najpierw dobrze trzeba przetestować hasło, a na koniec spr czy nie wyciekło
 
     def __init__(self, password) -> None:
@@ -97,7 +98,7 @@ class HaveIbeenPwndValidator(Validator):
                 # _ => gdy zmienna jest nam niepotrzebna
                 if found_hash == hash[5:]:
                     raise ValidationError('Leaked password! Choose another one!')
-        return True
+
 
 class PasswordValidator(Validator):
     def __init__(self, password):
@@ -117,3 +118,4 @@ class PasswordValidator(Validator):
             if not validator.is_valid():
                 return False
         return True
+

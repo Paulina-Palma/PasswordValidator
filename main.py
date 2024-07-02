@@ -145,7 +145,7 @@ class HaveIbeenPwndValidator(Validator):
                 # _ => gdy zmienna jest nam niepotrzebna
                 if found_hash == hash_of_password[5:]:
                     raise ValidationError('Leaked password! Choose another one!')
-        return True
+
 
 
 class PasswordValidator(Validator):
@@ -172,3 +172,4 @@ class PasswordValidator(Validator):
             if not validator.is_valid():
                 return False
         return True
+

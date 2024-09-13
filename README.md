@@ -12,7 +12,7 @@ Invalid passwords are logged with error messages for debugging or review purpose
 It’s designed for automating password checks from large lists, ensuring only strong passwords are kept.
 
 ## Project Overview:
-**Goal**: The project validates a password by running it through multiple checks, ensuring that it meets security standards like length, character variety (numbers, uppercase, lowercase, special characters), and even checking if it has been compromised in a data breach (using the Have I Been Pwned API).
+**Goal**: The project validates a password by running it through multiple checks, ensuring that it meets security standards like length, character variety (numbers, uppercase, lowercase, special characters), and even checking if it has been compromised in a data breach (using the Have I Been Pwned API).  
 **Validators**: Each validation criterion is encapsulated in its own class, which makes the design flexible and easy to extend.
 
 ## Key Components:
@@ -28,8 +28,3 @@ Validator: Serves as the abstract base class for all validators. It forces each 
 3. **PasswordValidator Class**:
 PasswordValidator: Takes the password as input and sequentially runs it through all validators. If the password passes all checks, it’s considered valid.
 
-### Code Execution:
-At the end, the PasswordValidator is instantiated with the password 'qwerty'. Each validator is executed in order, and if the password fails any of the checks, the validation stops and returns False.
-
-### Example Output:
-Since 'qwerty' is a weak password (it lacks special characters, uppercase letters, numbers, and may have been pwned), the output will likely be False.

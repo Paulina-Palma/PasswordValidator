@@ -1,6 +1,12 @@
 # Password Validator
 Checks if passwords stored in a text file meet certain security requirements.  
-It reads passwords from an input file (passwords.txt), validates them according to specified rules (such as minimum length, the presence of uppercase letters, numbers, and special characters), and writes only the valid passwords to an output file (safe.txt).   
+It reads passwords from an input file (passwords.txt), validates them according to specified rules such as:
+- minimum length,
+- the presence of uppercase letters,
+- numbers,
+- and special characters   
+
+and writes only the valid passwords to an output file (safe.txt).   
 Invalid passwords are logged with error messages for debugging or review purposes.  
 
 ## Key Features:

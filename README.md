@@ -25,12 +25,12 @@ It’s designed for automating password checks from large lists, ensuring only s
 1. **Abstract Validator Class**:
 Validator: Serves as the abstract base class for all validators. It forces each subclass to implement the is_valid() method.
 2. **Validators**:
-- HasNumberValidator: Checks if the password contains a number.
-- HasUpperCharacterValidator: Checks if there is at least one uppercase letter.
-- HasLowerCharacterValidator: Checks for at least one lowercase letter.
-- HasSpecialCharacterValidator: Ensures the presence of at least one special character.
-- LengthValidator: Ensures the password meets a minimum length requirement (default 8 characters).
-- HaveIbeenPwndValidator: Uses the Have I Been Pwned API to check if the password has been exposed in a data breach.
+- HasNumberValidator: Checks if the password contains a number
+- HasUpperCharacterValidator: Checks if there is at least one uppercase letter
+- HasLowerCharacterValidator: Checks for at least one lowercase letter
+- HasSpecialCharacterValidator: Ensures the presence of at least one special character
+- LengthValidator: Ensures the password meets a minimum length requirement (default 8 characters)
+- HaveIbeenPwndValidator: Uses the Have I Been Pwned API to check if the password has been exposed in a data breach
 3. **PasswordValidator Class**:
 PasswordValidator: Takes the password as input and sequentially runs it through all validators. If the password passes all checks, it’s considered valid.
 
